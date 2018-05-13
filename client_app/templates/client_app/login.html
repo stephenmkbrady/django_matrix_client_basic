@@ -1,0 +1,32 @@
+{% extends "client_app/base.html" %}
+
+{% block content %}
+<body>
+	{% if login_error %}
+		<div class="header marquee"><h2> Login Error: {{error_text}} </h2></div>
+	{% endif %}
+	<br><br>
+	<form action="" method="post">
+    {% csrf_token %}
+    <!-- {{ form.as_p }} -->
+    <p>{{form.your_name.error}}</p>
+    <p><label for="{{ form.your_name.id_for_label }}">Your Name</label></p>
+    <p>{{form.your_name}}</p>
+	<p>{{form.your_pass.error}}</p>
+	<p><label for="{{ form.your_name.id_for_label }}">Your Password</label></p>
+    <p>{{form.your_pass}}</p>
+    <p>{{form.room.error}}</p>
+    <p><label for="{{ form.room.id_for_label }}">Matrix Room</label></p>
+    <p>{{form.room}}</p>
+    <p>{{form.server.error}}</p>
+    <p><label for="{{ form.server.id_for_label }}">Matrix Server</label></p>
+    <p>{{form.server}}
+	<p>{{form.message_count.error}}
+	<p><label for="{{ form.message_count.id_for_label }}">Max Number Of Messages To Retrieve</label></p>
+    <p>{{form.message_count}}</p>
+    <p><label for="id_show_images" class="switch">{{form.show_images}}<span class="slider"></span></label></p>
+    <br>
+    <input type="submit" value="Login" />
+</form>
+</body>
+{% endblock %}
