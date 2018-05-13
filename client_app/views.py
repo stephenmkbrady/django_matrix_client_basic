@@ -23,12 +23,13 @@ def index(request):
 			session.matrix_user_name = form.cleaned_data['your_name']
 			session.matrix_room_name = form.cleaned_data['room']
 			session.matrix_server = form.cleaned_data['server']
+			session.save()
 			client = MatrixClient(session.matrix_server)
 			session.message_count = form.cleaned_data['message_count']
 			session.show_images = form.cleaned_data['show_images']
 			try:
 				session.matrix_token = client.login_with_password(session.matrix_user_name, password=form.cleaned_data['your_pass'])
-
+				session.save()
 			except MatrixRequestError as e:
 				return render(request, 'client_app/login.html', {'form': form, 'login_error':True, 'error_text': str(e)})
 			else:
@@ -49,6 +50,7 @@ def chat(request, update=""):
 				room_topic =  api.get_room_topic(api.get_room_id(session.matrix_room_name))['topic']
 				synced = _get_messages(sync_token="end", direction='f')
 				session.messages = json.dumps( synced['chunk'] + jsonDec.decode(session.messages))
+				session.save()
 				return render(request, 'client_app/chat.html', 
 					{'chat_form': chat_form, 'name':session.matrix_user_name, 'messages':jsonDec.decode(session.messages), 'room':session.matrix_room_name, 'topic':room_topic, 'show_images':session.show_images })
 
@@ -67,6 +69,7 @@ def chat(request, update=""):
 			session.matrix_sync_token = synced["next_batch"]
 			synced = _get_messages(sync_token="start", direction='b')
 			session.messages = json.dumps(synced['chunk'])
+			session.save()
 
 		except MatrixRequestError as e:
 			print(str(e))
@@ -80,6 +83,7 @@ def chat(request, update=""):
 		room_topic =  api.get_room_topic(api.get_room_id(session.matrix_room_name))['topic']
 		synced = _get_messages(sync_token="end", direction='f')
 		session.messages = json.dumps( synced['chunk'] + jsonDec.decode(session.messages))
+		session.save()
 		return render(request, 'client_app/chat.html', 
 			{'chat_form': chat_form, 'name':session.matrix_user_name, 'messages':jsonDec.decode(session.messages), 'room':session.matrix_room_name, 'topic':room_topic, 'show_images':session.show_images })
 
@@ -87,6 +91,7 @@ def _get_messages(sync_token, direction):
 	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
 	synced = api.get_room_messages(api.get_room_id(session.matrix_room_name), session.matrix_sync_token, direction, limit=session.message_count)
 	session.matrix_sync_token = synced[sync_token]
+	session.save()
 	room_topic =  api.get_room_topic(api.get_room_id(session.matrix_room_name))['topic']
 	synced['chunk'] = _parse_messages(synced['chunk'])
 	return synced
