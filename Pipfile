@@ -11,6 +11,7 @@ pprint = "*"
 simplejson = "*"
 "psycopg2" = "*"
 django-heroku = "*"
+gunicorn = "*"
 
 [dev-packages]
 

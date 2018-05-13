@@ -1,17 +1,1 @@
-certifi==2018.4.16
-chardet==3.0.4
-DateTime==4.2
-dj-database-url==0.5.0
-Django==2.0.5
-django-heroku==0.3.1
-idna==2.6
-matrix-client==0.2.0
-pprint==0.1
-psycopg2==2.7.4
-psycopg2-binary==2.7.4
-pytz==2018.4
-requests==2.18.4
-simplejson==3.14.0
-urllib3==1.22
-whitenoise==3.3.1
-zope.interface==4.5.0
+Requirement already satisfied: gunicorn in /home/ras/Documents/GIT/heroku_django_matrix_client/pymatrix-clientenv/lib/python3.6/site-packages (19.8.1)
