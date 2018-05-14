@@ -6,8 +6,7 @@ from django.contrib.messages import get_messages
 from .forms import NameForm, ChatForm
 from .models import Session
 
-from matrix_client.client import MatrixClient, MatrixRequestError
-from matrix_client.api import MatrixHttpApi
+from matrix_client.api import MatrixHttpApi, MatrixRequestError
 
 from datetime import datetime
 import pprint, re, sys
@@ -61,8 +60,13 @@ def index(request):
 				print("form.cleaned_data['message_count'] ",form.cleaned_data['message_count'])
 				print("session.show_images ",session.show_images)
 				print("form.cleaned_data['show_images'] ",form.cleaned_data['show_images'])
-				client = MatrixClient(session.matrix_server)
-				session.matrix_token = client.login_with_password(form.cleaned_data['your_name'], form.cleaned_data['your_pass'])
+
+				print("Logging in to matrix")
+				sys.stdout.flush()
+				api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
+				response = api.login('m.login.password',user=form.cleaned_data['your_name'], password=form.cleaned_data['your_pass'])
+				session.matrix_token = response["access_token"]
+        
 				session.save()
 				sys.stdout.flush()
 			except MatrixRequestError as e:
