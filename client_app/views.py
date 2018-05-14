@@ -39,6 +39,7 @@ def index(request):
 					show_images = form.cleaned_data['show_images']
 				)
 				session.save()
+				sys.stdout.flush()
 			else:
 				print("OPEN SESSION")
 				session = Session.objects.get(matrix_user_name = form.cleaned_data['your_name'])
@@ -48,6 +49,7 @@ def index(request):
 				session.message_count = form.cleaned_data['message_count']
 				session.show_images = form.cleaned_data['show_images']
 				session.save()
+				sys.stdout.flush()
 			try:
 				print("LOGIN VARS")
 				print("session.matrix_user_name ", session.matrix_user_name)
@@ -63,6 +65,7 @@ def index(request):
 				client = MatrixClient(session.matrix_server)
 				session.matrix_token = client.login_with_password(form.cleaned_data['your_name'], form.cleaned_data['your_pass'])
 				session.save()
+				sys.stdout.flush()
 			except MatrixRequestError as e:
 				return render(request, 'client_app/login.html', {'form': form, 'login_error':True, 'error_text': str(e)})
 			else:
@@ -85,6 +88,7 @@ def chat(request, update=""):
 	print("session.matrix_server ",session.matrix_server )
 	print("session.message_count ",session.message_count )
 	print("session.show_images ",session.show_images)
+	sys.stdout.flush()
 	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
 
 	if request.method == 'POST': #If the user hit send button
@@ -103,6 +107,7 @@ def chat(request, update=""):
 
 		except MatrixRequestError as e:
 			print(str(e))
+			sys.stdout.flush()
 			form = NameForm(request.POST)
 			return render(request, 'client_app/login.html', {'form': form, 'login_error':True, 'error_text': str(e)})
 		else:
@@ -121,6 +126,7 @@ def chat(request, update=""):
 
 		except MatrixRequestError as e:
 			print(str(e))
+			sys.stdout.flush()
 			form = NameForm(request.POST)
 			return render(request, 'client_app/login.html', {'form': form, 'login_error':True})
 		else:
@@ -143,6 +149,7 @@ def _get_messages(request, sync_token, direction):
 		print("MESSAGE : ", message)
 
 	print("_get_message username: ", user_name)	
+	sys.stdout.flush()
 	session = Session.objects.get(matrix_user_name = user_name.message)
 	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
 	synced = api.get_room_messages(api.get_room_id(session.matrix_room_name), session.matrix_sync_token, direction, limit=session.message_count)
@@ -169,6 +176,7 @@ def _parse_messages(input):
 				m['content']['formatted_body'] = LAIN_REGEX.sub(r'<a href="https://lainchan.org/\1">\1</a>', m['content']['formatted_body'])
 				print(m['origin_server_ts'])
 				pp.pprint(m)
+				sys.stdout.flush()
 			if 'msgtype' in m['content']:
 				if m['content']['msgtype'] == "m.image":
 					m['content']['info']['thumbnail_url'] = "http://matrix.org/_matrix/media/v1/download/" + m['content']['info']['thumbnail_url'][6:]
