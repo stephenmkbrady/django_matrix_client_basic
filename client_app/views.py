@@ -152,6 +152,7 @@ def _get_messages(request, sync_token, direction):
 		print("MESSAGE : ", message)
 
 	print("_get_message username: ", user_name)	
+	messages.add_message(request, messages.INFO, user_name)
 	sys.stdout.flush()
 	session = Session.objects.get(matrix_user_name = user_name.message)
 	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
