@@ -1,5 +1,8 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
+from django.contrib import messages
+from django.contrib.messages import get_messages
+
 from .forms import NameForm, ChatForm
 from .models import Session
 
@@ -18,27 +21,70 @@ jsonDec = json.decoder.JSONDecoder()
 
 def index(request):
 	if request.method == 'POST':
+		print("POST form")
 		form = NameForm(request.POST)
 		if form.is_valid():
-			session.matrix_user_name = form.cleaned_data['your_name']
-			session.matrix_room_name = form.cleaned_data['room']
-			session.matrix_server = form.cleaned_data['server']
-			session.save()
-			client = MatrixClient(session.matrix_server)
-			session.message_count = form.cleaned_data['message_count']
-			session.show_images = form.cleaned_data['show_images']
+			for s in list(Session.objects.all()):
+				print(s.matrix_user_name)
+			#Get username from db or create it, and fill out the information from the form
+			#Add user_name to message to pass to chat view so it knows which session to open
+			messages.add_message(request, messages.INFO, form.cleaned_data['your_name'])
+			if not Session.objects.filter(matrix_user_name = form.cleaned_data['your_name']):
+				print("CREATE SESSION")
+				session = Session.objects.create( 
+					matrix_user_name = form.cleaned_data['your_name'],
+					matrix_room_name = form.cleaned_data['room'],
+					matrix_server = form.cleaned_data['server'],
+					message_count = form.cleaned_data['message_count'],
+					show_images = form.cleaned_data['show_images']
+				)
+				session.save()
+			else:
+				print("OPEN SESSION")
+				session = Session.objects.get(matrix_user_name = form.cleaned_data['your_name'])
+				session.matrix_user_name = form.cleaned_data['your_name']
+				session.matrix_room_name = form.cleaned_data['room']
+				session.matrix_server = form.cleaned_data['server']
+				session.message_count = form.cleaned_data['message_count']
+				session.show_images = form.cleaned_data['show_images']
+				session.save()
 			try:
-				session.matrix_token = client.login_with_password(session.matrix_user_name, password=form.cleaned_data['your_pass'])
+				print("LOGIN VARS")
+				print("session.matrix_user_name ", session.matrix_user_name)
+				print("form.cleaned_data['your_name'] ",form.cleaned_data['your_name'])
+				print("session.matrix_room_name ",session.matrix_room_name )
+				print("form.cleaned_data['room'] ",form.cleaned_data['room'])
+				print("session.matrix_server ",session.matrix_server )
+				print("form.cleaned_data['server'] ",form.cleaned_data['server'])
+				print("session.message_count ",session.message_count )
+				print("form.cleaned_data['message_count'] ",form.cleaned_data['message_count'])
+				print("session.show_images ",session.show_images)
+				print("form.cleaned_data['show_images'] ",form.cleaned_data['show_images'])
+				client = MatrixClient(session.matrix_server)
+				session.matrix_token = client.login_with_password(form.cleaned_data['your_name'], form.cleaned_data['your_pass'])
 				session.save()
 			except MatrixRequestError as e:
 				return render(request, 'client_app/login.html', {'form': form, 'login_error':True, 'error_text': str(e)})
 			else:
 				return HttpResponseRedirect('/chat')
-	else:
-		form = NameForm(initial={"your_name":session.matrix_user_name, "room":"#cosmic_horror:matrix.org","server":"https://matrix.org", "message_count":1000})
+	else: #GET page returns form with initial values
+		form = NameForm(initial={"room":"#cosmic_horror:matrix.org","server":"https://matrix.org", "message_count":1000})
 	return render(request, 'client_app/login.html', {'form': form, 'login_error':False})
 
 def chat(request, update=""):
+	storage = get_messages(request)
+	for message in storage:
+		user_name = message
+		print("MESSAGE : ", message)
+
+	print("username: ", user_name)
+	session = Session.objects.get(matrix_user_name = user_name.message)
+	print("LOGIN VARS")
+	print("session.matrix_user_name ", session.matrix_user_name)
+	print("session.matrix_room_name ",session.matrix_room_name )
+	print("session.matrix_server ",session.matrix_server )
+	print("session.message_count ",session.message_count )
+	print("session.show_images ",session.show_images)
 	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
 
 	if request.method == 'POST': #If the user hit send button
@@ -48,7 +94,8 @@ def chat(request, update=""):
 				response = api.send_message(api.get_room_id(session.matrix_room_name), chat_form.cleaned_data['text_entered'])
 				chat_form = ChatForm()
 				room_topic =  api.get_room_topic(api.get_room_id(session.matrix_room_name))['topic']
-				synced = _get_messages(sync_token="end", direction='f')
+				messages.add_message(request, messages.INFO, session.matrix_user_name)
+				synced = _get_messages(request, sync_token="end", direction='f')
 				session.messages = json.dumps( synced['chunk'] + jsonDec.decode(session.messages))
 				session.save()
 				return render(request, 'client_app/chat.html', 
@@ -67,7 +114,8 @@ def chat(request, update=""):
 			synced = api.sync()
 			room_topic =  api.get_room_topic(api.get_room_id(session.matrix_room_name))['topic']
 			session.matrix_sync_token = synced["next_batch"]
-			synced = _get_messages(sync_token="start", direction='b')
+			messages.add_message(request, messages.INFO, session.matrix_user_name)
+			synced = _get_messages(request, sync_token="start", direction='b')
 			session.messages = json.dumps(synced['chunk'])
 			session.save()
 
@@ -81,13 +129,21 @@ def chat(request, update=""):
 	else: # update is requested so return next messages using sync token from initial sync
 		chat_form = ChatForm()
 		room_topic =  api.get_room_topic(api.get_room_id(session.matrix_room_name))['topic']
-		synced = _get_messages(sync_token="end", direction='f')
+		messages.add_message(request, messages.INFO, session.matrix_user_name)
+		synced = _get_messages(request, sync_token="end", direction='f')
 		session.messages = json.dumps( synced['chunk'] + jsonDec.decode(session.messages))
 		session.save()
 		return render(request, 'client_app/chat.html', 
 			{'chat_form': chat_form, 'name':session.matrix_user_name, 'messages':jsonDec.decode(session.messages), 'room':session.matrix_room_name, 'topic':room_topic, 'show_images':session.show_images })
 
-def _get_messages(sync_token, direction):
+def _get_messages(request, sync_token, direction):
+	storage = get_messages(request)
+	for message in storage:
+		user_name = message
+		print("MESSAGE : ", message)
+
+	print("_get_message username: ", user_name)	
+	session = Session.objects.get(matrix_user_name = user_name.message)
 	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
 	synced = api.get_room_messages(api.get_room_id(session.matrix_room_name), session.matrix_sync_token, direction, limit=session.message_count)
 	session.matrix_sync_token = synced[sync_token]

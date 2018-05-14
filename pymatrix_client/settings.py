@@ -133,3 +133,8 @@ STATIC_URL = '/static/'
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+
+# Added from here: The python doc is all over the place https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-python
+# Can't login into postgres db currently 
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
