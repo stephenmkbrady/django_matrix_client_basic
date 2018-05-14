@@ -10,8 +10,7 @@ from matrix_client.client import MatrixClient, MatrixRequestError
 from matrix_client.api import MatrixHttpApi
 
 from datetime import datetime
-import pprint
-import re
+import pprint, re, sys
 import simplejson as json
 
 session = Session()
