@@ -13,7 +13,7 @@
 			<span class="message">{{m.content.msgtype}}: {{m.content.formatted_body|safe}} - <cite>{{m.origin_server_ts}} - {{m.sender}}</cite></span>
 		{% elif m.content.msgtype == "m.image" %}
 			<span class="message">
-			{% if show_images == "True" %}
+			{% if show_images == True %}
 				<img src="{{m.content.info.thumbnail_url}}" height="20%" alt="{{m.content.body}}">
 			{% endif %}
 			<a href="{{m.content.url}}">{{m.content.body}}</a>  - <cite>{{m.origin_server_ts}} - {{m.sender}}</cite>
