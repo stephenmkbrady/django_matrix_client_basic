@@ -16,7 +16,7 @@ This client just needs a very basic browser and internet access.
 - Toaster compatible
 
 ### Live demo version
-https://peaceful-sea-58238.herokuapp.com/
+[Matrix Client Running On Heroku](https://peaceful-sea-58238.herokuapp.com/)
 (First load might be slow as you wake the heroku hobby dyno up.)
 
 ### TODO
