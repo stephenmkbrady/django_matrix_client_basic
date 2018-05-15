@@ -185,7 +185,7 @@ button, input {
 .message:hover {
 	margin-left: 0.1em;
 	margin-right: 0.1em;	
-	box-shadow: 4px 4 px #09121b;
+	box-shadow: 4px 4px #09121b;
 }
 .message_br {
 	padding: 0.5px 0.5px;
