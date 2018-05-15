@@ -12,7 +12,7 @@ This client just needs a very basic browser and internet access.
         src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
         alt="Valid CSS!" /></a>
 <a href="https://www.djangoproject.com">
-    <img style="border:0;width:88px;height:31px"
+    <img style="border:0;height:31px"
         src="https://www.djangoproject.com/s/img/logos/django-logo-positive.png"
         alt="https://www.djangoproject.com" /></a>
 
