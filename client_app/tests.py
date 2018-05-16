@@ -40,11 +40,23 @@ class SessionTestCase(TestCase):
 		self.assertEqual(first_user.matrix_sync_token, "t88-5678_5787_0578_56781_56781_56781")
 		self.assertEqual(second_user.show_images, False)
 
-	def test_no_questions(self):
+	# Testing views
+	# Happy path tests
+	def test_login(self):
+		pass
+		
+	def test_chat_update(self):
+		pass
+
+	def test_chat_send(self):
+		pass
+
+	def test_not_logged_in(self):
 		"""
 		If not logged in, return to first page.
+		This will happen if there is no token in the session.
 		"""
 		response = self.client.get(reverse('chat'))
-		self.assertEqual(response.status_code, 200)
-		self.assertContains(response, "No polls are available.")
-		self.assertQuerysetEqual(response.context['latest_question_list'], [])
+		self.assertEqual(response.status_code, 302)
+		print(response)
+		self.assertRedirects(response, "/")

@@ -78,21 +78,25 @@ def index(request):
 	return render(request, 'client_app/login.html', {'form': form, 'login_error':False})
 
 def chat(request, update=""):
+	user_name = None
 	storage = get_messages(request)
 	for message in storage:
 		user_name = message
 		print("MESSAGE : ", message)
 
-	print("username: ", user_name)
-	session = Session.objects.get(matrix_user_name = user_name.message)
-	print("LOGIN VARS")
-	print("session.matrix_user_name ", session.matrix_user_name)
-	print("session.matrix_room_name ",session.matrix_room_name )
-	print("session.matrix_server ",session.matrix_server )
-	print("session.message_count ",session.message_count )
-	print("session.show_images ",session.show_images)
-	sys.stdout.flush()
-	api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
+	if user_name != None:
+		print("username: ", user_name)
+		session = Session.objects.get(matrix_user_name = user_name.message)
+		print("LOGIN VARS")
+		print("session.matrix_user_name ", session.matrix_user_name)
+		print("session.matrix_room_name ",session.matrix_room_name )
+		print("session.matrix_server ",session.matrix_server )
+		print("session.message_count ",session.message_count )
+		print("session.show_images ",session.show_images)
+		sys.stdout.flush()
+		api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
+	else:
+		return HttpResponseRedirect('/')
 
 	if request.method == 'POST': #If the user hit send button
 		try:

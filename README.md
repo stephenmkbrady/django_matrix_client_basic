@@ -90,6 +90,8 @@ For runnin on heroku:
 First run (and if/when you change the model):
 $ python manage.py makemigrations
 $ python manage.py migrate
+$ python manage.py collectstatic
+
 
 To run the server:
 $ python manage.py runserver

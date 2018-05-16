@@ -1,0 +1,346 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	text-align-last: center;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	line-height: 1.2em;
+	font-size: 12px; /*9px*/
+	background-color: #123;
+	color: #ffd402;
+	/* border: 5px solid; */
+	/* border-color: #123; */
+}
+
+.simple-container {
+	max-width: 675px;
+	margin: 0 auto;
+	padding-top: 70px;
+	padding-bottom: 20px;
+}
+
+.simple-print {
+	fill: white;
+	stroke: white;
+}
+.simple-print svg {
+	height: 100%;
+}
+
+.simple-close {
+	color: white;
+	border-color: white;
+}
+
+.simple-ext-info {
+	border-top: 1px solid #aaa;
+}
+
+cite {
+	font-size: 8px; /*7px*/
+
+}
+p {
+	font-size: 16px;/*9px*/
+}
+
+h1 {
+	font-size: 28px; /*16px*/
+	line-height: 30px;
+}
+
+h2 {
+	font-size: 24px; /*14px*/
+	line-height: 28px;
+}
+
+h3 {
+	font-size: 20px; /*12px*/
+	line-height: 24px;
+/*	padding-top: 5px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #D8D8D8;
+	border-top: 1px solid #D8D8D8;*/
+}
+
+hr {
+	height: 1px;
+	background-color: #d8d8d8;
+	border: none;
+	width: 100%;
+	margin: 0px;
+}
+
+a[href] {
+	color: #aaa;
+}
+
+a[href]:hover {
+	color: #666;
+}
+
+img {
+	max-width: 100%;
+}
+
+li {
+	line-height: 1.5em;
+}
+
+aside,
+[class *= "sidebar"],
+[id *= "sidebar"] {
+	max-width: 90%;
+	margin: 0 auto;
+	border: 1px solid lightgrey;
+	padding: 5px 15px;
+}
+
+@media (min-width: 1921px) {
+	body {
+		font-size: 9px;
+	}
+}
+
+button, input {
+	color: #ffd402;
+	background-color: black;
+	border-color: black; 
+	border: none;
+}
+.header {
+    position: fixed;
+    top: 0;
+	padding:1px 10px;
+	display: block;
+	width:100%;
+	width: -moz-available; 
+	width: -webkit-fill-available;
+	border-color: #050505;
+	background-color: #050505;
+}
+
+.message {
+	margin-left: 0.3em;
+	margin-right: 0.3em;
+	padding: 0.05em 0.5em;
+	border-left: 6px solid;
+	border-right: 6px solid;
+	display: block;
+	background: black;
+	overflow-wrap: break-word;
+	box-shadow: 3px 3px #09121b;
+}
+.message:hover {
+	margin-left: 0.1em;
+	margin-right: 0.1em;	
+	box-shadow: 4px 4px #09121b;
+}
+.message_br {
+	padding: 0.5px 0.5px;
+	line-height: 0.5em;
+}
+
+.footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0rem;
+  background-color: #000;
+  text-align: center;
+}
+.padding{
+	padding:3rem;
+}
+
+form p input {
+	width: -moz-available; 
+	width: -webkit-fill-available;	
+}
+
+.marquee {
+	height: 23px;
+	overflow: hidden;
+	white-space: nowrap;
+	border-bottom: 2px solid;
+}
+.marquee h3 {
+	position: absolute;
+	margin: 0;
+	text-align: center;
+	/* Starting position */
+	-moz-transform:translateX(100%);
+	-webkit-transform:translateX(100%);	
+	transform:translateX(100%);
+	/* Apply animation to this element */	
+	-moz-animation: example1 15s linear infinite;
+	-webkit-animation: example1 15s linear infinite;
+	animation: example1 15s linear infinite;
+	}
+	/* Move it (define the animation) */
+	@-moz-keyframes example1 {
+	0%   { -moz-transform: translateX(100%); }
+	100% { -moz-transform: translateX(-100%); }
+	}
+	@-webkit-keyframes example1 {
+	0%   { -webkit-transform: translateX(100%); }
+	100% { -webkit-transform: translateX(-100%); }
+	}
+	@keyframes example1 {
+	0%   { 
+	-moz-transform: translateX(100%); /* Firefox bug fix */
+	-webkit-transform: translateX(100%); /* Firefox bug fix */
+	transform: translateX(100%); 		
+	}
+	100% { 
+	-moz-transform: translateX(-100%); /* Firefox bug fix */
+	-webkit-transform: translateX(-100%); /* Firefox bug fix */
+	transform: translateX(-100%); 
+	}
+}
+
+textarea#id_text_entered {
+    background-color: #123;
+    border-color: #ffd402;
+    color: #ffd402;
+    border-left: 5px solid #ffd402;
+    border-right: 5px  solid #ffd402;
+    border-bottom: 1px solid #ffd402;
+    border-top: 5px solid #ffd402;
+    width: 100%;
+}
+
+form {
+}
+
+.button-border {
+	color:#ffd402;
+	border-bottom:5px solid;
+    padding:3px;
+}
+
+input[type="submit"], button {
+  display: inline-block;
+  /* padding: 15px 25px; */
+  /* font-size: 24px; */
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #000;
+  background-color: #fff000;
+  border: none;
+  border-radius: 1px;
+  box-shadow: 0 1px #ff4000;
+}
+
+input[type="submit"]:hover, button:hover {background-color: #ffa000}
+
+input[type="submit"]:active, button:active {
+  background-color: #ffa000;
+  box-shadow: 0 0px #ff4000;
+  transform: translateY(1px);
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #222;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: black
+  ;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #fff000;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #fff000;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
