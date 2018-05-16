@@ -111,11 +111,12 @@ It's pretty straight forward from here.
 
 Note: The Procfile, Pipfile, Pipfile.lock and requirements.txt do not need to be modified for this.
 
-1. heroku create
-2. heroku addons:add heroku-postgresql
-3. git push heroku master
-4. heroku ps:scale web=1
-5. heroku open
+__1. IMPORTANT: Open pymatrix_client/settings.py and set "DEBUG = False" from "DEBUG = True"__
+2. heroku create
+3. heroku addons:add heroku-postgresql
+4. git push heroku master
+5. heroku ps:scale web=1
+6. heroku open
 
 ### TODO
 #### Major Tasks in order of priority
