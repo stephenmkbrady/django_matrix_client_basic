@@ -98,6 +98,8 @@ def chat(request, update=""):
 		print("session.show_images ",session.show_images)
 		sys.stdout.flush()
 		api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
+		print("GET_MEMBERSHIP")
+		api.join_room(api.get_room_id(session.matrix_room_name))
 	else:
 		return HttpResponseRedirect('/')
 
