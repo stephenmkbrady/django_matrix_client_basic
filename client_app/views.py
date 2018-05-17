@@ -68,8 +68,8 @@ def index(request):
 				api = MatrixHttpApi(session.matrix_server)
 				response = api.login('m.login.password',user=form.cleaned_data['your_name'], password=form.cleaned_data['your_pass'])
 				session.matrix_token = response["access_token"]
-        
 				session.save()
+				print("session_token: ", str(session.matrix_token))
 				sys.stdout.flush()
 			except MatrixRequestError as e:
 				#return HttpResponseForbidden()
