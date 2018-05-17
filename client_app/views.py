@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.messages import get_messages
+from django.http import HttpResponseForbidden
 
 from .forms import NameForm, ChatForm
 from .models import Session
@@ -70,6 +71,7 @@ def index(request):
 				session.save()
 				sys.stdout.flush()
 			except MatrixRequestError as e:
+				#return HttpResponseForbidden()
 				return render(request, 'client_app/login.html', {'form': form, 'login_error':True, 'error_text': str(e)})
 			else:
 				return HttpResponseRedirect('/chat')
@@ -100,6 +102,8 @@ def chat(request, update=""):
 
 	if request.method == 'POST': #If the user hit send button
 		try:
+			print("Posting chat")
+			sys.stdout.flush()
 			chat_form = ChatForm(request.POST)
 			if chat_form.is_valid():
 				response = api.send_message(api.get_room_id(session.matrix_room_name), chat_form.cleaned_data['text_entered'])
@@ -155,7 +159,7 @@ def _get_messages(request, sync_token, direction):
 		user_name = message
 		print("MESSAGE : ", message)
 
-	print("_get_message username: ", user_name)	
+	print("_get_message username: ", user_name, " : ", direction)	
 	messages.add_message(request, messages.INFO, user_name)
 	sys.stdout.flush()
 	session = Session.objects.get(matrix_user_name = user_name.message)
@@ -193,3 +197,6 @@ def _parse_messages(input):
 					m['content']['body'] = URL_REGEX.sub(r'<a href="\1">\1</a>', m['content']['body'])
 					m['content']['body'] = LAIN_REGEX.sub(r'<a href="https://lainchan.org/\1">\1</a>', m['content']['body'])
 	return input
+
+def error(request):
+	return render(request,'client_app/404.html', content_type='text/html; charset=utf-8', status=404)

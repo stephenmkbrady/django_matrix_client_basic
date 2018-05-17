@@ -7,3 +7,4 @@ urlpatterns = [
     path('chat/', views.chat, name='chat'),
     path('chat/<str:update>', views.chat, name='chat'),
 ]
+

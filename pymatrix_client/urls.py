@@ -20,3 +20,4 @@ urlpatterns = [
 	path('', include('client_app.urls')),
 	path('admin/', admin.site.urls),
 ]
+
