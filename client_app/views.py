@@ -23,8 +23,8 @@ def index(request):
 		print("POST form")
 		form = NameForm(request.POST)
 		if form.is_valid():
-			for s in list(Session.objects.all()):
-				print(s.matrix_user_name)
+			#for s in list(Session.objects.all()):
+				#print(s.matrix_user_name)
 			#Get username from db or create it, and fill out the information from the form
 			#Add user_name to message to pass to chat view so it knows which session to open
 			messages.add_message(request, messages.INFO, form.cleaned_data['your_name'])
@@ -61,10 +61,11 @@ def index(request):
 				print("form.cleaned_data['message_count'] ",form.cleaned_data['message_count'])
 				print("session.show_images ",session.show_images)
 				print("form.cleaned_data['show_images'] ",form.cleaned_data['show_images'])
+				print("session_token: ", str(session.matrix_token))
 
 				print("Logging in to matrix")
 				sys.stdout.flush()
-				api = MatrixHttpApi(session.matrix_server, token=session.matrix_token)
+				api = MatrixHttpApi(session.matrix_server)
 				response = api.login('m.login.password',user=form.cleaned_data['your_name'], password=form.cleaned_data['your_pass'])
 				session.matrix_token = response["access_token"]
         
