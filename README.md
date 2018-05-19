@@ -6,18 +6,6 @@ The web version looks good but is frontend heavy and not designed for older devi
 Some of the lighter native clients are great but are locked to win, mac or linux. 
 This client just needs a very basic browser and internet access.
 
-
-<a href="http://jigsaw.w3.org/css-validator/check/referer">
-    <img style="border:0;width:88px;height:31px"
-        src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
-        alt="Valid CSS!" /></a>
-<a href="https://www.djangoproject.com">
-    <img style="border:0;height:31px"
-        src="https://www.djangoproject.com/s/img/logos/django-logo-positive.png"
-        alt="https://www.djangoproject.com" /></a>
-
-
-
 #### Features
 - It's simply HTML4/5, and CSS3 in your browser. 
 - It's responsive so will fit all screens. 
@@ -104,6 +92,13 @@ http://127.0.0.1:8000
 
 [Note: You can also run it locally using heroku_cli](https://devcenter.heroku.com/articles/getting-started-with-python#run-the-app-locally)
 
+##### Running Tests
+1. Add the following to your environment variables:
+$ export TEST_USER="your_test_user_name_registered_with_matrix_server"
+$ export TEST_PASS="your_test_user_names_pass"
+$ export TEST_ROOM='#your_room:the_matrix_server_with_the.room'
+$ python manage.py test
+
 ##### Deploying to Heroku
 It's pretty straight forward from here.
 [If you're unfamiliar with heroku, maybe follow this guide in a seperate folder before deploying this or any app. If you've deployed ruby or nodejs apps then you should be ok.](https://devcenter.heroku.com/articles/getting-started-with-python#introduction)
@@ -120,7 +115,6 @@ __1. IMPORTANT: Open pymatrix_client/settings.py and set "DEBUG = False" from "D
 
 ### TODO
 #### Major Tasks in order of priority
-- Tests are still being written and finding bugs.
 - Another branch will be created with lightweight JS for async, make it behave like irc client.
 #### Minor Tasks
 - Add a little extra CSS to add better styling for medium to extra large screens.
