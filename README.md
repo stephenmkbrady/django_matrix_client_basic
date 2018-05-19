@@ -92,12 +92,18 @@ http://127.0.0.1:8000
 
 [Note: You can also run it locally using heroku_cli](https://devcenter.heroku.com/articles/getting-started-with-python#run-the-app-locally)
 
+
 ##### Running Tests
 1. Add the following to your environment variables:
+
 $ export TEST_USER="your_test_user_name_registered_with_matrix_server"
+
 $ export TEST_PASS="your_test_user_names_pass"
+
 $ export TEST_ROOM='#your_room:the_matrix_server_with_the.room'
+
 $ python manage.py test
+
 
 ##### Deploying to Heroku
 It's pretty straight forward from here.
